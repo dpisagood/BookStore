@@ -41,9 +41,9 @@ public class UserService {
 		//ʹ��code��ѯ���ݿ��Ƿ�������û��ļ�¼
 		User user=userdao.findByCode(code);
 		//�����Ӧ�����������û������ڣ�˵����������Ч
-		if(user==null) throw new UserException("��������Ч");
+		if(user==null) throw new UserException("激活码不存在");
 		//У���û�״̬�Ƿ�Ϊδ����״̬������Ѽ��˵���Ƕ��μ���׳��쳣
-		if(user.isState()) throw new UserException("���Ѿ���������ظ����");
+		if(user.isState()) throw new UserException("你已经激活");
 		//У��ɹ����޸��û�״̬
 		userdao.updateState(user.getUid(), true);
 	}
@@ -56,10 +56,10 @@ public class UserService {
 	 */
 	public User  login(User form) throws UserException{
 		User user=userdao.findByUserName(form.getUsername());
-		if(user==null) throw new UserException("�û���������");
+		if(user==null) throw new UserException("用户名不存在");
 		if(!user.getPassword().equals(form.getPassword())) 
-			throw new UserException("�������");
-		if(!user.isState()) throw new UserException("����δ����");
+			throw new UserException("密码错误");
+		if(!user.isState()) throw new UserException("您还未激活");
 		return user;
 	}
 	

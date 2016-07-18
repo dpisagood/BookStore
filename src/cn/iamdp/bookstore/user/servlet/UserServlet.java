@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.iamdp.bookstore.cart.javabean.Cart;
 import cn.iamdp.bookstore.user.javabean.User;
 import cn.iamdp.bookstore.user.service.UserException;
 import cn.iamdp.bookstore.user.service.UserService;
@@ -104,6 +105,8 @@ public class UserServlet extends BaseServlet {
 		try {
 			User user=userService.login(form);
 			request.getSession().setAttribute("session_user", user);
+			//给用户添加一个购物车，即向session中保存一个Cart对象
+			request.getSession().setAttribute("cart", new Cart());
 			return "r:/index.jsp";
 		} catch (UserException e) {
 			request.setAttribute("msg", e.getMessage());

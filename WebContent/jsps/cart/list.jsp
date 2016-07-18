@@ -59,7 +59,7 @@
 <table border="1" width="100%" cellspacing="0" background="black">
 	<tr>
 		<td colspan="7" align="right" style="font-size: 15pt; font-weight: 900">
-			<a href="javascript:alert('已清空购物车！');">清空购物车</a>
+			<a href="<c:url value='/CartServlet?method=clear'/>">清空购物车</a>
 		</td>
 	</tr>
 	<tr>
@@ -71,47 +71,21 @@
 		<th>小计</th>
 		<th>操作</th>
 	</tr>
-
+<c:forEach items="${sessionScope.cart.cartItems}" var="cartItem">
 	<tr>
-		<td><div><img src="<c:url value='/book_img/8758723-1_l.jpg'/>"/></div></td>
-		<td>Java详解</td>
-		<td>张孝祥</td>
-		<td>39.9元</td>
-		<td>2</td>
-		<td>79.8元</td>
-		<td><a href="javascript:alert('删除购物项成功！');">删除</a></td>
+		<td><div><img src="<c:url value='/${cartItem.book.image }'/>"/></div></td>
+		<td>${cartItem.book.bname }</td>
+		<td>${cartItem.book.author }</td>
+		<td>${cartItem.book.price }</td>
+		<td>${cartItem.count }</td>
+		<td>${cartItem.subtotal }元</td>
+		<td><a href="<c:url value='CartServlet?method=delete&bid=${cartItem.book.bid}'/>">删除</a></td>
 	</tr>
-	<tr>
-		<td><div><img src="<c:url value='/book_img/8991366-1_l.jpg'/>"/></div></td>
-		<td>Java详解</td>
-		<td>张孝祥</td>
-		<td>39.9元</td>
-		<td>2</td>
-		<td>79.8元</td>
-		<td><a href="javascript:alert('删除购物项成功！');">删除</a></td>
-	</tr>
-	<tr>
-		<td><div><img src="<c:url value='/book_img/9265169-1_l.jpg'/>"/></div></td>
-		<td>Java详解</td>
-		<td>张孝祥</td>
-		<td>39.9元</td>
-		<td>2</td>
-		<td>79.8元</td>
-		<td><a href="javascript:alert('删除购物项成功！');">删除</a></td>
-	</tr>
-	<tr>
-		<td><div><img src="<c:url value='/book_img/9317290-1_l.jpg'/>"/></div></td>
-		<td>Java详解</td>
-		<td>张孝祥</td>
-		<td>39.9元</td>
-		<td>2</td>
-		<td>79.8元</td>
-		<td><a href="javascript:alert('删除购物项成功！');">删除</a></td>
-	</tr>
+</c:forEach>
 
 	<tr>
 		<td colspan="7" align="right" style="font-size: 15pt; font-weight: 900">
-			合计：319.2元
+			合计：${sessionScope.cart.total }元
 		</td>
 	</tr>
 	<tr>
