@@ -30,14 +30,19 @@ public class CartServlet extends BaseServlet{
 	 */
 	public  String add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cart cart=(Cart) request.getSession().getAttribute("cart");//先把登录时系统给的cart拿过来
-		String bid=request.getParameter("bid");//添加商品时会将商品的ID传过来
-		Book book= new BookService().load(bid);//通过id找到book
-		int count=Integer.parseInt(request.getParameter("count"));
-		CartItem cartItem=new CartItem();//实例化一个条目，条目里有你选的书和数量
-		cartItem.setBook(book);
-		cartItem.setCount(count);
-		cart.add(cartItem);//将书籍添加到cart类中的map中
-		return "f:/jsps/cart/list.jsp";
+		if(cart!=null){
+			String bid=request.getParameter("bid");//添加商品时会将商品的ID传过来
+			Book book= new BookService().load(bid);//通过id找到book
+			int count=Integer.parseInt(request.getParameter("count"));
+			CartItem cartItem=new CartItem();//实例化一个条目，条目里有你选的书和数量
+			cartItem.setBook(book);
+			cartItem.setCount(count);
+			cart.add(cartItem);//将书籍添加到cart类中的map中
+			return "f:/jsps/cart/list.jsp";
+		}else{
+			request.setAttribute("msg","您还没有登录不能使用购物车！");
+			return "f:/jsps/cart/list.jsp";
+		}
 	}
 
 	/**

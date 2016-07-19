@@ -104,7 +104,7 @@ public class UserServlet extends BaseServlet {
 		User form=CommonUtils.toBean(request.getParameterMap(), User.class);
 		try {
 			User user=userService.login(form);
-			request.getSession().setAttribute("session_user", user);
+			request.getSession().setAttribute("session_user", user);//保存当前用户信息
 			//给用户添加一个购物车，即向session中保存一个Cart对象
 			request.getSession().setAttribute("cart", new Cart());
 			return "r:/index.jsp";
