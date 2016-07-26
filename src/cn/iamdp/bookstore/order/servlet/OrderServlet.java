@@ -14,6 +14,7 @@ import cn.iamdp.bookstore.cart.javabean.Cart;
 import cn.iamdp.bookstore.cart.javabean.CartItem;
 import cn.iamdp.bookstore.order.javabean.Order;
 import cn.iamdp.bookstore.order.javabean.OrderItem;
+import cn.iamdp.bookstore.order.service.OrderException;
 import cn.iamdp.bookstore.order.service.OrderService;
 import cn.iamdp.bookstore.user.javabean.User;
 import cn.itcast.commons.CommonUtils;
@@ -68,5 +69,53 @@ public class OrderServlet extends BaseServlet {
 		request.setAttribute("order", order);
 		return "f:/jsps/order/desc.jsp";
 	}
-
+	
+	/**
+	 * 我的订单
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public String myOrders(HttpServletRequest request,HttpServletResponse response){
+		User user=(User)request.getSession().getAttribute("session_user");
+		List<Order> orderList=orderservice.myOrders(user.getUid());
+		request.setAttribute("orderList", orderList);
+		return "f:/jsps/order/list.jsp";
+	}
+	
+	
+	/**
+	 * 加载订单
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public String load(HttpServletRequest request,HttpServletResponse response){
+		request.setAttribute("order", orderservice.load(request.getParameter("oid")));
+		return "f:/jsps/order/desc.jsp";
+	}
+	
+	/**
+	 * 确认收货
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	public String confirm(HttpServletRequest request,HttpServletResponse response){
+		try {
+			orderservice.confirm(request.getParameter("oid"));
+			request.setAttribute("msg", "恭喜，收货成功！");
+		} catch (OrderException e) {
+			request.setAttribute("msg", e.getMessage());
+		}
+		return "f:/jsps/msg.jsp";
+	}
 }
+
+
+
+
+
+
+
+

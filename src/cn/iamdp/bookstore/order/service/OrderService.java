@@ -1,10 +1,12 @@
 package cn.iamdp.bookstore.order.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import cn.iamdp.bookstore.order.dao.OrderDao;
 import cn.iamdp.bookstore.order.javabean.Order;
 import cn.itcast.jdbc.JdbcUtils;
+import oracle.net.aso.s;
 
 public class OrderService {
 	OrderDao orderdao=new OrderDao();
@@ -28,5 +30,28 @@ public class OrderService {
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * 查询我的订单
+	 * @param uid
+	 * @return
+	 */
+	public List<Order> myOrders(String uid) {
+		return orderdao.findByUid(uid);
+	}
+
+	public Order load(String oid) {
+		return orderdao.load(oid);
+	}
+
+	/**
+	 * 确定收货
+	 * @param parameter
+	 */
+	public void confirm(String oid)throws OrderException {
+		int state= orderdao.getStateByOid(oid);
+		if(state!=3) throw new OrderException("确定订单失败！");
+		orderdao.updateState(oid, 4);
 	}
 }
